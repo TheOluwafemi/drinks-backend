@@ -24,9 +24,9 @@ admin.autodiscover()
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Blog API",
+        title="Drinks API",
         default_version='v1',
-        description="Test description",
+        description="Backend for drinks sharing app",
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),

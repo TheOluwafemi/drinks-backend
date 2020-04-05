@@ -61,6 +61,8 @@ class ProfileFeedItem(models.Model):
 
     user_profile = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
     status_text = models.CharField(max_length=255)
+    image_url = models.CharField(
+        max_length=255, default="https://i.picsum.photos/id/64/4326/2884.jpg")
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
