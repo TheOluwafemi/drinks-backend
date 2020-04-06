@@ -12,7 +12,7 @@ class CorsMiddleware(object):
             response["Content-Length"] = "0"
             response["Access-Control-Max-Age"] = 86400
 
-        response["Access-Control-Allow-Origin"] = "*"
+        response["Access-Control-Allow-Origin"] = "http://localhost:8100"
         response["Access-Control-Allow-Methods"] = "DELETE, GET, OPTIONS, PATCH, POST, PUT"
         response["Access-Control-Allow-Headers"] = "accept, accept-encoding, authorization, content-type, dnt, origin, user-agent, x-csrftoken, x-requested-with"
         return response
