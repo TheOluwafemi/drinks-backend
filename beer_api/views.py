@@ -7,6 +7,9 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+from beer_api import serializers
+
 
 from beer_api import models
 from beer_api import permissions
@@ -25,17 +28,30 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     search_fields = ('name', 'email',)
 
 
-class LoginViewSet(viewsets.ViewSet):
-    """Checks email and password and returns an auth token."""
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(
+            request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'token': token.key, 'id': token.user_id})
 
-    serializer_class = AuthTokenSerializer
 
-    def create(self, request):
-        """Use the ObtainAuthToken APIView to validate and create a token."""
-        Response = ObtainAuthToken().post(request)
-        Response.data['message'] = 'Success'
-        Response.data['status'] = '200'
-        return Response
+# class LoginViewSet(ObtainAuthToken):
+#     """Checks email and password and returns an auth token."""
+
+#     serializer_class = AuthTokenSerializer
+
+#     def post(self, request, *args, **kwargs):
+#         """Use the ObtainAuthToken APIView to validate and create a token."""
+#         Response = ObtainAuthToken().post(request)
+#         Response.data['message'] = 'Success'
+#         Response.data['status'] = '200'
+#         Response.data['user'] = ObtainAuthToken().post(self.request.user)
+#         return Response
+
+    # def perform_create(self, serializer):
+    #     """Sets the user profile to the logged in user"""
+    #     serializer.save(user_profile=self.request.user)
 
 
 class UserProfileFeedViewset(viewsets.ModelViewSet):
